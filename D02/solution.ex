@@ -55,14 +55,17 @@ defmodule D02 do
 	end
 end
 
-[day|_] = System.argv
-input = Input.file(day) 
-	|> Input.split("\n")
-	|> Enum.map(fn x -> D02.part1Parse(x) end)
+defmodule Main do 
+	def execute(day) do
+		input = Input.file(day) 
+			|> Input.split("\n")
+			|> Enum.map(fn x -> D02.part1Parse(x) end)
 
-position1 = Subposition.getInitial
-part1Object = input |> D02.part1(position1) 
-part1Object.horizontal*part1Object.vertical |> IO.puts
-position2 = Orientation.getInitial
-part2Object = input |> D02.part2(position2)
-part2Object.horizontal*part2Object.vertical |> IO.puts
+		position1 = Subposition.getInitial
+		part1Object = input |> D02.part1(position1) 
+		part1Object.horizontal*part1Object.vertical |> IO.puts
+		position2 = Orientation.getInitial
+		part2Object = input |> D02.part2(position2)
+		part2Object.horizontal*part2Object.vertical |> IO.puts
+	end
+end

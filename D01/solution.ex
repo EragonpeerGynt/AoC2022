@@ -21,16 +21,18 @@ defmodule D01 do
 	end
 end
 
-[day|_] = System.argv
-input = Input.file(day) 
-	|> Input.split("\n")
-	|> Enum.map(fn x -> Integer.parse(x) end) 
-	|> Enum.map(fn {x,_} -> x end)
+defmodule Main do
+	def execute(day) do
+		input = Input.file(day) 
+			|> Input.split("\n")
+			|> Enum.map(fn x -> Integer.parse(x) end) 
+			|> Enum.map(fn {x,_} -> x end)
 
-[head|tail] = input
+		[head|tail] = input
 
-D01.part1(head, tail, 0) |> IO.puts
+		D01.part1(head, tail, 0) |> IO.puts
 
-firstsum = input |> Enum.take(3) |> Enum.sum()
-D01.part2(firstsum, tail, 0) |> IO.puts
-
+		firstsum = input |> Enum.take(3) |> Enum.sum()
+		D01.part2(firstsum, tail, 0) |> IO.puts
+	end
+end

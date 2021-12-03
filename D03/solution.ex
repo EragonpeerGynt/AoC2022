@@ -52,32 +52,35 @@ defmodule Part2 do
 	end
 end
 
-[day|_] = System.argv
-input = Input.file(day)
-	|> Input.split("\n")
+defmodule Main do
+	def execute(day) do
+		input = Input.file(day)
+			|> Input.split("\n")
 
-input1 = Part1.process_input(input)
-[head1|tail1] = input1
-tsolution1 = Part1.add_lists(head1, tail1)
-solution1 = tsolution1 
-	|> Enum.reverse() 
-	|> Part1.get_binary(0,1,1)
+		input1 = Part1.process_input(input)
+		[head1|tail1] = input1
+		tsolution1 = Part1.add_lists(head1, tail1)
+		solution1 = tsolution1 
+			|> Enum.reverse() 
+			|> Part1.get_binary(0,1,1)
 
-solution1 = tsolution1 
-	|> Enum.reverse() 
-	|> Part1.get_binary(0,-1,1) 
-	|> Kernel.*(solution1)
-IO.puts solution1
+		solution1 = tsolution1 
+			|> Enum.reverse() 
+			|> Part1.get_binary(0,-1,1) 
+			|> Kernel.*(solution1)
+		IO.puts solution1
 
-solution2 = input1 
-	|> Part2.find_highest_occurance(0,1) 
-	|> Enum.reverse 
-	|> Part1.get_binary(0,1,1)
+		solution2 = input1 
+			|> Part2.find_highest_occurance(0,1) 
+			|> Enum.reverse 
+			|> Part1.get_binary(0,1,1)
 
-solution2 = input1 
-	|> Part2.find_highest_occurance(0,-1) 
-	|> Enum.reverse 
-	|> Part1.get_binary(0,1,1) 
-	|> Kernel.*(solution2)
-	
-solution2 |> IO.puts
+		solution2 = input1 
+			|> Part2.find_highest_occurance(0,-1) 
+			|> Enum.reverse 
+			|> Part1.get_binary(0,1,1) 
+			|> Kernel.*(solution2)
+			
+		solution2 |> IO.puts
+	end
+end
