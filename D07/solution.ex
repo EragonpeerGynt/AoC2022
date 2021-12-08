@@ -1,10 +1,9 @@
 defmodule Part1 do
 	def solve(input) do
 		{min,max} = Enum.min_max(input)
-		input |> IO.inspect
 		Enum.to_list(min..max)
-		|> Enum.map(fn fuel -> {Enum.reduce(input, 0, fn x,acc -> abs(x-fuel) + acc end), fuel} end)
-		|> Enum.min_by(fn {x,_} -> x end)
+		|> Enum.map(fn fuel -> Enum.reduce(input, 0, fn x,acc -> abs(x-fuel) + acc end) end)
+		|> Enum.min()
 		|> IO.inspect
 	end
 end
@@ -12,10 +11,9 @@ end
 defmodule Part2 do
 	def solve(input) do
 		{min,max} = Enum.min_max(input)
-		input |> IO.inspect
 		Enum.to_list(min..max)
-		|> Enum.map(fn fuel -> {Enum.reduce(input, 0, fn x,acc -> quick_maths(abs(x-fuel)) + acc end), fuel} end)
-		|> Enum.min_by(fn {x,_} -> x end)
+		|> Enum.map(fn fuel -> Enum.reduce(input, 0, fn x,acc -> quick_maths(abs(x-fuel)) + acc end) end)
+		|> Enum.min()
 		|> IO.inspect
 	end
 
