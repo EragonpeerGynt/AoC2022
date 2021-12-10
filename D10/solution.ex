@@ -46,9 +46,7 @@ defmodule Part2 do
 		|> Enum.map(fn {_, x} -> x end)
 		|> Enum.map(&dive_remaining(0, &1))
 		|> Enum.sort
-		|> then(
-			fn x -> Enum.at(x, (length(x)-1)/2 |> trunc) end
-		)
+		|> then(fn x -> Enum.at(x, (length(x)-1)/2 |> trunc) end)
 		|> IO.inspect
 	end
 
