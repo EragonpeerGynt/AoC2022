@@ -14,3 +14,23 @@ defmodule Matrix do
 		[Enum.map(a, &hd/1) | transpose(Enum.map(a, &tl/1))]
 	end
 end
+
+defmodule Maping do
+	def create_map(map, [], _, _) do
+		map
+	end
+
+	def create_map(map, [head|tail], x, y) when is_list(head) do
+		create_map(map, head, x, y)
+		|> create_map(tail, x, y+1)
+	end
+
+	def create_map(map, [head|tail], x, y) do
+		Map.put(map, {x,y}, head)
+		|> create_map(tail, x+1, y)
+	end
+
+	def create_map(input) do
+		create_map(%{}, input, 0, 0)
+	end
+end
