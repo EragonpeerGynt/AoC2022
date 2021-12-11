@@ -33,9 +33,7 @@ defmodule Part1 do
 
 	def increase_power({{x, y} = coor, _}, map) do
 		if map[coor] == 9 do
-			#{"-", map[coor]} |> IO.inspect
 			map = %{map | coor => 10}
-			#{"#", coor, map[coor]} |> IO.inspect
 			for(
 				dx <- (x - 1)..(x + 1),
 				dy <- (y - 1)..(y + 1),
@@ -75,8 +73,8 @@ defmodule Main do
 		|> Enum.map(fn x -> String.split(x, "", trim: true) |> Enum.map(&String.to_integer/1) end)
 		|> Maping.create_map
 		
-		#input
-		#|> Part1.solution
+		input
+		|> Part1.solution
 		
 		input
 		|> Part2.solution
