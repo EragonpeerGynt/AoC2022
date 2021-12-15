@@ -137,8 +137,8 @@ defmodule Main do
 			x |> String.split("", trim: true), 
 			y |> String.split("\n", trim: true) |> Part1.create_map} end)
 
-		#input
-		#|> Part1.solution
+		input
+		|> Part1.solution
 		
 		input
 		|> Part2.solution

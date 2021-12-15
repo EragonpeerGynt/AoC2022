@@ -34,3 +34,20 @@ defmodule Maping do
 		create_map(%{}, input, 0, 0)
 	end
 end
+
+defmodule Draw do
+	def draw_y_axis(map, x, y, max_x, max_y) do
+		if y <= max_y do
+			draw_x_axis(map, x, y, max_x, max_y)
+			IO.puts ""
+			draw_y_axis(map, x, y+1, max_x, max_y)
+		end
+	end
+
+	def draw_x_axis(map, x, y, max_x, max_y) do
+		if x <= max_x do
+			map[{x,y}] |> IO.write
+			draw_x_axis(map, x+1, y, max_x, max_y)
+		end
+	end
+end
