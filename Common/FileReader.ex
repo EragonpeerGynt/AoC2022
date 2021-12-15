@@ -46,7 +46,16 @@ defmodule Draw do
 
 	def draw_x_axis(map, x, y, max_x, max_y) do
 		if x <= max_x do
-			map[{x,y}] |> IO.write
+			case map[{x,y}] do
+				x when x != nil -> x
+				|> Integer.to_string 
+				|> String.pad_leading(2, "0") 
+				|> IO.write
+				_ -> "xx" |> IO.write
+			end
+
+			" " |> IO.write
+
 			draw_x_axis(map, x+1, y, max_x, max_y)
 		end
 	end

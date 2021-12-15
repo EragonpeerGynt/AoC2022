@@ -1,18 +1,22 @@
 defmodule Part1 do
 	def solution(input) do
-		dive(%{{0,0} => 0}, input, %{}, input |> get_last_key)
+		dive(
+			%{{0,0} => {0, get_manhattan({0,0}, input |> get_last_key)}}, 
+			input, 
+			%{}, 
+			input |> get_last_key)
 		|> IO.inspect
 	end
 
 	def dive(distance, map, visited, max_key) do
 		case get_current_min(distance, visited) do
 			{coor, value} when coor == max_key -> value
-			{coor, _} -> add_neighbours(coor, map, distance)
+			{coor, _} -> add_neighbours(coor, map, distance, max_key)
 			|> dive(map, Map.put(visited, coor, 0), max_key)
 		end
 	end
 
-	def add_neighbours({x,y} = node, map, distance) do
+	def add_neighbours({x,y} = node, map, distance, max_key) do
 		for(
 			dx <- (x-1)..(x+1),
 			dy <- (y-1)..(y+1),
@@ -21,18 +25,21 @@ defmodule Part1 do
 		)
 		|> Enum.reject(fn new_node -> map[new_node] == nil end)
 		|> Enum.reduce(distance, fn new_node, acc -> 
-			case find_distance(new_node, map[new_node]+acc[node], acc) do
-				{true, value} -> Map.put(acc, new_node, value)
+			case find_distance(new_node, map[new_node]+(acc[node] |> then(fn {a,_} -> a end)), acc) do
+				{true, value} -> Map.put(acc, new_node, {value, value+get_manhattan(new_node, max_key)})
 				{false, _} -> acc
 			end
 		end)
 	end
 
 	def find_distance(node, new_value, distance) do
-		if distance[node] < new_value do
-			{false, nil}
-		else
-			{true, new_value}
+		case distance[node] do
+			nil -> {true, new_value}
+			{ac,_} -> if ac < new_value do
+				{false, nil}
+			else
+				{true, new_value}
+			end
 		end
 	end
 
@@ -40,7 +47,7 @@ defmodule Part1 do
 		distance
 		|> Map.to_list
 		|> Enum.reject(fn {coor, _} -> visited[coor] != nil end)
-		|> Enum.sort_by(fn {_,val} -> val end)
+		|> Enum.sort_by(fn {_,{_,val}} -> val end)
 		|> then(fn [first|_] -> first end)
 	end
 
@@ -58,6 +65,15 @@ defmodule Part1 do
 				|> Enum.sort(:desc)
 				|> then(fn [y|_] -> y end)
 			} end)
+	end
+
+	def get_manhattan({x1,y1},{x2,y2}) do
+		(get_distance(x1,x2) + get_distance(y1,y2))
+	end
+
+	def get_distance(x,y) do
+		Enum.min_max([x,y])
+		|> then(fn {l,h} -> h-l end)
 	end
 end
 
@@ -118,10 +134,10 @@ defmodule Main do
 		|> Enum.map(fn x -> String.split(x, "", trim: true) |> Enum.map(&String.to_integer/1) end)
 		|> Maping.create_map
 
-		#input
-		#|> Part1.solution
-
 		input
-		|> Part2.solution
+		|> Part1.solution
+
+		#input
+		#|> Part2.solution
 	end
 end
