@@ -1,4 +1,4 @@
-defmodule Part1 do
+defmodule Old do
 	def solution(input) do
 		dive(
 			%{{0,0} => {0, get_manhattan({0,0}, input |> get_last_key)}}, 
@@ -77,6 +77,10 @@ defmodule Part1 do
 	end
 end
 
+defmodule Part1 do
+	def add_to_queue([head|tail], {coor, val
+end
+
 defmodule Part2 do
 	def solution(input) do
 		input
@@ -134,10 +138,10 @@ defmodule Main do
 		|> Enum.map(fn x -> String.split(x, "", trim: true) |> Enum.map(&String.to_integer/1) end)
 		|> Maping.create_map
 
-		input
-		|> Part1.solution
-
 		#input
-		#|> Part2.solution
+		#|> Part1.solution
+
+		input
+		|> Part2.solution
 	end
 end
