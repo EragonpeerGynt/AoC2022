@@ -1,4 +1,4 @@
-DAY="D16"
+DAY="D01"
 rm -f *.beam
 elixirc Common/FileReader.ex
 if [ -f ${DAY}/solution.ex ]; then
