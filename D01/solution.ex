@@ -26,7 +26,7 @@ defmodule Main do
 	def execute(day) do
 		input = Input.file(day) |> String.split("\n\n")
 
-		#D01.part1(input) |> IO.puts
+		D01.part1(input) |> IO.puts
 		D01.part2(input) |> IO.puts
 	end
 end
