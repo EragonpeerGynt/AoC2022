@@ -5,14 +5,9 @@ defmodule D05 do
 		|> get_top_stack
 	end
 
-	def process_commands(map, [], _) do
-		map
-	end
-
-	def process_commands(map, [command|commands], mode) do
-		map
-		|> execute_command(command, mode)
-		|> process_commands(commands, mode)
+	def process_commands(map, commands, mode) do
+		commands
+		|> Enum.reduce(map, fn x, acc -> execute_command(acc, x, mode) end)
 	end
 
 	def execute_command(map, command, mode) do
@@ -41,12 +36,16 @@ defmodule D05 do
 		|> List.replace_at(command[:f]-1, negative)
 	end
 
+	# This is version 2.0 where main processing is simplified
+	# This enables me to run original logic with mode variable
 	def part2(map, commands) do
 		map
 		|> process_commands(commands, 2)
 		|> get_top_stack
 	end
 
+	# Segment used as common processing
+	# Used for all the required parsing of provided data
 	def parse_storage(input) do
 		input
 		|> String.split("\n")
