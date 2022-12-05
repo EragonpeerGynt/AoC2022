@@ -15,11 +15,11 @@ defmodule D05 do
 	end
 
 	def execute_diver(map, command, [], add, stack, _, _) do
-		finaliza_move(map, command, [], add, stack)
+		finalize_move(map, command, [], add, stack)
 	end
 
 	def execute_diver(map, command, [head|negative], add, stack, 0, _) do
-		finaliza_move(map, command, [head|negative], add, stack)
+		finalize_move(map, command, [head|negative], add, stack)
 	end
 	
 	def execute_diver(map, command, [head|negative], add, stack, count, mode) do
@@ -30,7 +30,7 @@ defmodule D05 do
 		
 	end
 
-	def finaliza_move(map, command, negative, add, stack) do 
+	def finalize_move(map, command, negative, add, stack) do 
 		map
 		|> List.replace_at(command[:t]-1, add++stack)
 		|> List.replace_at(command[:f]-1, negative)
