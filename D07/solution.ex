@@ -75,7 +75,7 @@ defmodule Main do
 		input = Input.file(day) 
   		|> String.split("\n")
 
-		#D07.part1(input) |> IO.puts
+		D07.part1(input) |> IO.puts
 		D07.part2(input) |> IO.puts
 	end
 end
