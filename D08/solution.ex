@@ -1,46 +1,18 @@
 defmodule D08 do
 	def part1(input) do
- 		max_edge = {max_x, max_y} = input |> find_max_edge |> IO.inspect
-		flat_map = input
-  		|> Map.to_list
-  		hidden_trees = flat_map
-		|> Enum.filter(fn {point, _} -> not_edge(point, max_edge) end)
-		|> Enum.filter(fn x -> not_highest(x, flat_map) end)
-  		|> Enum.count
-
- 		((max_x+1)*(max_y+1))-hidden_trees
+ 		max_edge = input |> find_max_edge
+		input
+  		|> Enum.count(fn x -> is_visible_on_any(x, input, max_edge) end)
 	end
 
- 	def not_highest(current, height_map) do
-  		not_highest(current, height_map, "x+")
-		&& not_highest(current, height_map, "x-")
-		&& not_highest(current, height_map, "y+")
-		&& not_highest(current, height_map, "y-")
+ 	def is_visible_on_any({point, height}, map, {max_x, max_y}) do
+		is_visible_in_range(height, find_line(map, point, "x"))
+  		|| is_visible_in_range(height, find_line(map, point, "x", max_x))
+		|| is_visible_in_range(height, find_line(map, point, "y"))
+   		|| is_visible_in_range(height, find_line(map, point, "y", max_y))
   	end
 
-   	def not_highest({{x, y}, height}, height_map, "x+") do
-		height_map
-  		|> Enum.filter(fn {{p_x, p_y}, p_h} -> p_x > x && p_y == y && p_h >= height end)
-		|> Enum.count > 0
- 	end
-
-  	def not_highest({{x, y}, height}, height_map, "x-") do
-		height_map
-  		|> Enum.filter(fn {{p_x, p_y}, p_h} -> p_x < x && p_y == y && p_h >= height end)
-		|> Enum.count > 0
- 	end
-
-  	def not_highest({{x, y}, height}, height_map, "y+") do
-		height_map
-  		|> Enum.filter(fn {{p_x, p_y}, p_h} -> p_x == x && p_y > y && p_h >= height end)
-		|> Enum.count > 0
- 	end
-
-  	def not_highest({{x, y}, height}, height_map, "y-") do
-		height_map
-  		|> Enum.filter(fn {{p_x, p_y}, p_h} -> p_x == x && p_y < y && p_h >= height end)
-		|> Enum.count > 0
- 	end
+   	def is_visible_in_range(height, tree_line), do: tree_line |> Enum.all?(fn x -> x < height end)
 
  	def find_max_edge(input) do
 		input
@@ -48,14 +20,6 @@ defmodule D08 do
 		|> Enum.max
   		|> then(fn {x, _} -> x end)
   	end
-
-   	def not_edge({x,y}, {edge_x, edge_y}) do
-		not_edge(x, edge_x) && not_edge(y, edge_y)
- 	end
-
-  	def not_edge(c, edge_c) do
-		c != 0 && c != edge_c
-   	end
 
 	def part2(input) do
  		max_edge = input |> find_max_edge
@@ -121,7 +85,7 @@ defmodule Main do
   		|> Enum.map(fn x -> x |> Enum.map(&String.to_integer/1) end)
   		|> Maping.create_map()
 
-		#D08.part1(input) |> IO.puts
+		D08.part1(input) |> IO.puts
 		D08.part2(input) |> IO.puts
 	end
 end
