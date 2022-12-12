@@ -8,7 +8,7 @@ defmodule D12 do
    		stack = [{{0, 0}, %Point{height: 1, tag: "S", cost: 0}}]
 	 	input = %{input | {0,0} => %Point{height: 1, tag: "S", cost: 0}}
 		process_stack(stack, input, neighbours)
-  		|> IO.inspect
+  		|> then(fn {_, point} -> point.cost end)
 	end
 
  	def process_stack([head={_,point}|stack], map, neighbours) do
@@ -32,7 +32,7 @@ defmodule D12 do
 
   	def add_neighbour(acc={map,stack}, height, value, coords, point) do
 		case {point.height, point.cost} do
-			{_, v} when v < value -> acc
+			{_, v} when v <= value -> acc
    			{h, _} when h != height and h != height+1 and h > height -> acc
 		  	_ -> {%{map | coords => %Point{height: point.height, tag: point.tag, cost: value+1}}, add_to_stack_secure(stack, {coords, %Point{height: point.height, tag: point.tag, cost: value+1}})}
   		end
@@ -82,7 +82,7 @@ defmodule Main do
   		|> Enum.map(fn x -> String.graphemes(x) |> Enum.map(&(D12.value_parse(&1, static_mapper))) end)
 		|> Maping.create_map
 		
-		D12.part1(input) #|> IO.puts
+		D12.part1(input) |> IO.puts
 		#D12.part2(input) |> IO.puts
 	end
 end
