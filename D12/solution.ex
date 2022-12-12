@@ -5,11 +5,19 @@ end
 defmodule D12 do
 	def part1(input) do
  		neighbours = [{0,1}, {0,-1}, {1,0}, {-1,0}]
-   		stack = [{{0, 0}, %Point{height: 1, tag: "S", cost: 0}}]
-	 	input = %{input | {0,0} => %Point{height: 1, tag: "S", cost: 0}}
+   		{start_coords, start_point} = input |> Map.to_list()
+	 	|> Enum.filter(fn {_, point} -> point.tag == "S" end)
+   		|> hd
+   		stack = [{start_coords, %{start_point | cost: 0}}]
+	 	input = %{input | start_coords => %{start_point | cost: 0}}
 		process_stack(stack, input, neighbours)
+  		|> IO.inspect
   		|> then(fn {_, point} -> point.cost end)
 	end
+
+ 	def process_stack([], _, _) do
+		{{0,0}, %Point{height: 0, tag: "Error", cost: 41*144*2}}
+  	end
 
  	def process_stack([head={_,point}|stack], map, neighbours) do
   		if point.tag != "E" do
@@ -59,8 +67,19 @@ defmodule D12 do
    	end
 
 	def part2(input) do
-		input
+		neighbours = [{0,1}, {0,-1}, {1,0}, {-1,0}]
+   		input |> Map.to_list()
+	 	|> Enum.filter(fn {_, point} -> point.tag == "S" || point.tag == "a" end)
+   		|> Enum.map(fn x -> prepare_starting_point(input, x, neighbours) end)
+	 	|> Enum.min
 	end
+
+ 	def prepare_starting_point(input, {start_coords, start_point}, neighbours) do
+		stack = [{start_coords, %{start_point | cost: 0}}]
+	 	input = %{input | start_coords => %{start_point | cost: 0}}
+		process_stack(stack, input, neighbours)
+  		|> then(fn {_, point} -> point.cost end)
+  	end
 
  	def value_parse(value, translator) do
 		%Point{height: translator[:binary.first(value)], tag: value, cost: 41*144*2}
@@ -83,6 +102,6 @@ defmodule Main do
 		|> Maping.create_map
 		
 		D12.part1(input) |> IO.puts
-		#D12.part2(input) |> IO.puts
+		D12.part2(input) |> IO.puts
 	end
 end
